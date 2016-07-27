@@ -1,0 +1,18 @@
+<dom-module id="app1-page2">
+
+  <template>
+      <div>testpage2</div>
+  </template>
+
+  <script>
+    Polymer({
+      is:'app1-page2',
+      behaviors:[nxPageBehavior],
+      created:function(){
+        this.nxSetTitle('Page 2');
+        this.nxSetLayout('layout-main');
+      }
+    });
+
+  </script>
+</dom-module>

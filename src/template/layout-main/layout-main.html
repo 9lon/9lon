@@ -1,0 +1,24 @@
+<dom-module id="layout-main">
+  <template>
+      layout-main {{localize('layout')}} 
+      <button on-tap="changeLanguage">Change</button>
+      <button on-tap="test">Test</button>
+      <hr>
+      <tag-page-load></tag-page-load>
+    </html>
+  </template>
+  <script>
+    Polymer({
+      is:'layout-main',
+      behaviors:[nxTemplateBehavior,nxLocalesBehavior],
+      changeLanguage:function(){
+        if(this.language == 'th'){
+          this.switchLanguage('en');
+        }else{
+          this.switchLanguage('th');
+        }
+      }
+    });
+  </script>
+
+</dom-module>

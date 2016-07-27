@@ -1,0 +1,48 @@
+<script>
+
+  localesBehavior = {
+    attached: function(){
+      this.set('language',localStorage.nxLanguage);
+      this.resources = mergeLocales;
+    },
+    switchLanguage: function(local){
+      localStorage.nxLanguage = local;
+      this.set('language',local);
+      var event = new CustomEvent('changeLocalize', { detail: local });
+      querySystem.dispatchEvent(event);
+    },
+    ready: function(){
+      querySystem.addEventListener('changeLocalize',this.changeLocalize.bind(this));
+    },
+    changeLocalize:function(e){
+      this.set('language',e.detail);
+    }
+  }
+  nxLocalesBehavior = [ Polymer.AppLocalizeBehavior, localesBehavior ];
+
+  nxPageBehavior = {
+    changePath: function(path) {
+      this.querySystem().changePath(path);
+    },
+    querySystem: function(){
+      return document.querySelector("nx-system");
+    },
+    nxSetLayout: function(layout){
+      this.querySystem().layout = layout;
+    },
+    nxSetTitle:function(txt){
+      document.title = txt;
+    }
+  };
+
+  nxTemplateBehavior = {
+    observers:['getPage(page)'],
+    getPage:function(page){
+      var queryTag = this.$$('tag-page-load');
+      queryTag.innerHTML='';
+      queryTag.appendChild(page);
+    }
+
+  };
+
+</script>
