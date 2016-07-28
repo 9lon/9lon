@@ -42,7 +42,18 @@
       queryTag.innerHTML='';
       queryTag.appendChild(page);
     }
+  };
 
+  nxCoreBehavior = {
+    nxSetGlobalElement:function(name){
+      if(typeof nxGlobalElement == "undefined"){
+        nxGlobalElement = {};
+      }
+      nxGlobalElement[name] = this;
+    },
+    nxGetGlobalElement:function(name){
+      return nxGlobalElement[name];
+    }
   };
 
 </script>
