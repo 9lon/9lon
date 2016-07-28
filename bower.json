@@ -1,6 +1,8 @@
 {
   "name": "nx-system",
   "homepage": "https://github.com/nx-element/nx-system",
+  "version": "0.0.1",
+  "private":false,
   "authors": [
     "pongpanot-t <pongpanot.t@nexts-corp.com>"
   ],
