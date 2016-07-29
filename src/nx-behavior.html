@@ -20,7 +20,7 @@
   }
   nxLocalesBehavior = [ Polymer.AppLocalizeBehavior, localesBehavior ];
 
-  nxPageBehavior = {
+  nxCoreBehavior = {
     changePath: function(path) {
       nxQuerySystem.changePath(path);
     },
@@ -29,19 +29,7 @@
     },
     nxSetTitle:function(txt){
       document.title = txt;
-    }
-  };
-
-  nxTemplateBehavior = {
-    observers:['getPage(page)'],
-    getPage:function(page){
-      var queryTag = this.$$('tag-page-load');
-      queryTag.innerHTML='';
-      queryTag.appendChild(page);
-    }
-  };
-
-  nxCoreBehavior = {
+    },
     nxSetGlobalElement:function(name){
       if(typeof nxGlobalElement == "undefined"){
         nxGlobalElement = {};
@@ -53,6 +41,15 @@
     },
     nxCloneData:function(data){
       return JSON.parse(JSON.stringify(data));
+    }
+  };
+
+  nxTemplateBehavior = {
+    observers:['getPage(page)'],
+    getPage:function(page){
+      var queryTag = this.$$('tag-page-load');
+      queryTag.innerHTML='';
+      queryTag.appendChild(page);
     }
   };
 
