@@ -2,7 +2,6 @@
   <template>
       layout-main {{localize('layout')}} 
       <button on-tap="changeLanguage">Change</button>
-      <button on-tap="test">Test</button>
       <hr>
       <tag-page-load></tag-page-load>
     </html>
@@ -13,9 +12,9 @@
       behaviors:[nxTemplateBehavior,nxLocalesBehavior],
       changeLanguage:function(){
         if(this.language == 'th'){
-          this.switchLanguage('en');
+          this.nxSwitchLanguage('en');
         }else{
-          this.switchLanguage('th');
+          this.nxSwitchLanguage('th');
         }
       }
     });

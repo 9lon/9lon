@@ -5,18 +5,17 @@
       this.set('language',localStorage.nxLanguage);
       this.resources = mergeLocales;
     },
-    switchLanguage: function(local){
+    nxSwitchLanguage: function(local){
       localStorage.nxLanguage = local;
-      this.set('language',local);
-      var event = new CustomEvent('changeLocalize', { detail: local });
-      nxQuerySystem.dispatchEvent(event);
+      for(var key in nxQueryLocalize) {
+        nxQueryLocalize[key].language = local;
+      }
     },
     ready: function(){
-      nxQuerySystem.addEventListener('changeLocalize',this.changeLocalize.bind(this));
+      nxQueryLocalize[this.is] = this;
     },
-    changeLocalize:function(e){
-      console.log('change');
-      this.set('language',e.detail);
+    detached:function(){
+      delete nxQueryLocalize[this.is];
     }
   }
   nxLocalesBehavior = [ Polymer.AppLocalizeBehavior, localesBehavior ];
