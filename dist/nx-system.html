@@ -30,7 +30,7 @@
 
   </template>
   <script>
-    querySystem = document.querySelector("nx-system");
+    nxQuerySystem = document.querySelector("nx-system");
 
     Polymer({
       is:'nx-system',
@@ -202,7 +202,7 @@
             redirect = false;
           }
         });
-        //console.log('403:',redirect);
+        
         if(redirect){
           this.changePath('/error/403');
         }

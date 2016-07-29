@@ -9,10 +9,10 @@
       localStorage.nxLanguage = local;
       this.set('language',local);
       var event = new CustomEvent('changeLocalize', { detail: local });
-      querySystem.dispatchEvent(event);
+      nxQuerySystem.dispatchEvent(event);
     },
     ready: function(){
-      querySystem.addEventListener('changeLocalize',this.changeLocalize.bind(this));
+      nxQuerySystem.addEventListener('changeLocalize',this.changeLocalize.bind(this));
     },
     changeLocalize:function(e){
       this.set('language',e.detail);
@@ -22,13 +22,10 @@
 
   nxPageBehavior = {
     changePath: function(path) {
-      this.querySystem().changePath(path);
-    },
-    querySystem: function(){
-      return document.querySelector("nx-system");
+      nxQuerySystem.changePath(path);
     },
     nxSetLayout: function(layout){
-      this.querySystem().layout = layout;
+      nxQuerySystem.layout = layout;
     },
     nxSetTitle:function(txt){
       document.title = txt;
@@ -53,6 +50,9 @@
     },
     nxGetGlobalElement:function(name){
       return nxGlobalElement[name];
+    },
+    nxCloneData:function(data){
+      return JSON.parse(JSON.stringify(data));
     }
   };
 

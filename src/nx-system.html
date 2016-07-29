@@ -30,7 +30,7 @@
 
   </template>
   <script>
-    querySystem = document.querySelector("nx-system");
+    nxQuerySystem = document.querySelector("nx-system");
 
     Polymer({
       is:'nx-system',
@@ -116,17 +116,20 @@
       },
       getLocales:function(layout,app,callback){
 
-        var splitLayout = layout.split('-')[1];
+        if(typeof layout != "undefined"){
+          var splitLayout = layout.split('-')[1];
+        }
         var mergeLocales = () => {
-          
           
           var mergeData = JSON.parse(JSON.stringify(locales.global));
 
-          for(var key in locales.layouts[splitLayout]) {
-              for(var key2 in locales.layouts[splitLayout][key]) {
-                mergeData[key][key2] = locales.layouts[splitLayout][key][key2];
-              }
-          }
+          if(typeof layout != "undefined"){
+            for(var key in locales.layouts[splitLayout]) {
+                for(var key2 in locales.layouts[splitLayout][key]) {
+                  mergeData[key][key2] = locales.layouts[splitLayout][key][key2];
+                }
+            }
+          } 
 
           for(var key in locales.apps[app]) {
               for(var key2 in locales.apps[app][key]) {
@@ -138,12 +141,34 @@
 
         }
 
+        var importLocalesApp = () => {
+          this.importHref(
+            this.resolveUrl('/src/apps/'+app+'/localize.html'),
+            (e)=>{
+
+              if(typeof locales.apps[app] == 'undefined'){
+                locales.apps[app] = localize;
+              }
+
+              mergeLocales();
+            },
+            (e)=>{
+              mergeLocales();
+            },
+            true
+          );
+        }
+
         this.importHref(
           this.resolveUrl('/src/apps/localize.html'),
           (e)=>{
 
             if(typeof locales == 'undefined'){
               locales = {global:localize};
+            }
+
+            if(typeof locales.apps == 'undefined'){
+              locales.apps = {};
             }
 
             this.importHref(
@@ -157,26 +182,12 @@
                   locales.layouts[splitLayout] = localize;
                 }
 
-                this.importHref(
-                  this.resolveUrl('/src/apps/'+app+'/localize.html'),
-                  (e)=>{
-
-                    if(typeof locales.apps == 'undefined'){
-                      locales.apps = {};
-                    }
-
-                    if(typeof locales.apps[app] == 'undefined'){
-                      locales.apps[app] = localize;
-                    }
-
-                    mergeLocales();
-                  },
-                  null,
-                  true
-                );
-
+                importLocalesApp();
+                
               },
-              null,
+              (e)=>{
+                importLocalesApp();
+              },
               true
             );
 
@@ -185,7 +196,7 @@
           true
         );
 
-
+        
 
 
       },
@@ -202,7 +213,7 @@
             redirect = false;
           }
         });
-        //console.log('403:',redirect);
+        
         if(redirect){
           this.changePath('/error/403');
         }
