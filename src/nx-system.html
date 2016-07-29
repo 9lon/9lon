@@ -122,8 +122,9 @@
         var mergeLocales = () => {
           
           var mergeData = JSON.parse(JSON.stringify(locales.global));
+     
 
-          if(typeof layout != "undefined"){
+          if(typeof locales.layouts[splitLayout] != "undefined"){
             for(var key in locales.layouts[splitLayout]) {
                 for(var key2 in locales.layouts[splitLayout][key]) {
                   mergeData[key][key2] = locales.layouts[splitLayout][key][key2];
@@ -171,13 +172,15 @@
               locales.apps = {};
             }
 
+            if(typeof locales.layouts == 'undefined'){
+              locales.layouts = {};
+            }
+
             this.importHref(
               this.resolveUrl('/src/template/'+layout+'/localize.html'),
               (e)=>{
 
-                if(typeof locales.layouts == 'undefined'){
-                  locales.layouts = {};
-                }
+                
                 if(typeof locales.layouts[splitLayout] == 'undefined'){
                   locales.layouts[splitLayout] = localize;
                 }

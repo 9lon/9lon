@@ -15,6 +15,7 @@
       nxQuerySystem.addEventListener('changeLocalize',this.changeLocalize.bind(this));
     },
     changeLocalize:function(e){
+      console.log('change');
       this.set('language',e.detail);
     }
   }
