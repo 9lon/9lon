@@ -117,18 +117,15 @@
       },
       getLocales:function(layout,app,callback){
 
-        if(typeof layout != "undefined"){
-          var splitLayout = layout.split('-')[1];
-        }
         var mergeLocales = () => {
           
           var mergeData = JSON.parse(JSON.stringify(locales.global));
      
 
-          if(typeof locales.layouts[splitLayout] != "undefined"){
-            for(var key in locales.layouts[splitLayout]) {
-                for(var key2 in locales.layouts[splitLayout][key]) {
-                  mergeData[key][key2] = locales.layouts[splitLayout][key][key2];
+          if(typeof locales.layouts[layout] != "undefined"){
+            for(var key in locales.layouts[layout]) {
+                for(var key2 in locales.layouts[layout][key]) {
+                  mergeData[key][key2] = locales.layouts[layout][key][key2];
                 }
             }
           } 
@@ -182,8 +179,8 @@
               (e)=>{
 
                 
-                if(typeof locales.layouts[splitLayout] == 'undefined'){
-                  locales.layouts[splitLayout] = localize;
+                if(typeof locales.layouts[layout] == 'undefined'){
+                  locales.layouts[layout] = localize;
                 }
 
                 importLocalesApp();
