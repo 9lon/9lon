@@ -1,5 +1,5 @@
 # 9lon-Mixer
-Framework for [Polymer](https://polymer-project.org).
+Framework for [Polymer](https://www.polymer-project.org).
 
 ## Features
 - Lazy Loading
