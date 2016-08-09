@@ -4,7 +4,7 @@ Framework for Polymer.
 ## Features
 - Lazy Loading
 - Template System
-- Extention Elements form [9lon](https://github.com/9lon)
+- Extention Elements from [9lon](https://github.com/9lon)
 - Internationalization [(I18n)](https://en.wikipedia.org/wiki/Internationalization_and_localization)
 
 ## Browser Support
