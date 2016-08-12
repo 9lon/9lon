@@ -1,4 +1,4 @@
-# 9lon-Mixer
+# 9lon
 Framework for [Polymer](https://www.polymer-project.org).
 
 ## Features
@@ -16,5 +16,5 @@ Latest ✔ | Latest ✔ | Latest ✔ |
 Using bower:
 
 ```bash
-$ bower install 9lon/mixer
+$ bower install 9lon
 ```

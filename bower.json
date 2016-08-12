@@ -1,7 +1,7 @@
 {
-  "name": "mixer",
-  "homepage": "https://9lon.github.io/mixer",
-  "version": "0.0.6",
+  "name": "9lon",
+  "homepage": "https://9lon.github.io/9lon",
+  "version": "0.0.7",
   "private": false,
   "authors": [
     "pongpanot-t <pongpanot.t@nexts-corp.com>"
