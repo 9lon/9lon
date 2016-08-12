@@ -1,11 +1,18 @@
+<script src="../bower_components/jwt-decode/build/jwt-decode.min.js"></script>
+<script src="../bower_components/axios/dist/axios.min.js"></script>
+
 <link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/app-localize-behavior/app-localize-behavior.html">
+<link rel="import" href="nx-behavior.html">
+
 
 <link rel="import" href="../bower_components/app-route/app-location.html">
 <link rel="import" href="../bower_components/app-route/app-route.html">
-<link rel="import" href="../bower_components/app-localize-behavior/app-localize-behavior.html">
-
 <link rel="import" href="nx-param.html">
-<link rel="import" href="nx-behavior.html">
+
+
+
+
 
 
 
@@ -53,14 +60,15 @@
         this.auth = decoded;
       },
       _routePageChanged:function(routeData){
+        
         if(!(typeof routeData.app == 'undefined' && typeof routeData.page == 'undefined' && this.routeAppOnly.app == '')){
-
+          
           if(!this.checkRole(routeData)){
+            
             this.importHref(
               this.resolveUrl('/src/apps/'+routeData.app+'/'+routeData.page+'.html'),
 
               (e)=>{
-                
                 var getPage = document.createElement(routeData.app+'-'+routeData.page);
                 getPage.route = routeData;
 
@@ -134,70 +142,56 @@
                 mergeData[key][key2] = locales.apps[app][key][key2];
               }
           }
-          
           callback(mergeData);
 
         }
 
-        var importLocalesApp = () => {
-          this.importHref(
-            this.resolveUrl('/src/apps/'+app+'/localize.html'),
-            (e)=>{
-
-              if(typeof locales.apps[app] == 'undefined'){
-                locales.apps[app] = localize;
-              }
-
+        var localesLoaded = {
+          global:false,
+          layout:false,
+          app:false,
+          loaded:function (pointer) {
+            this[pointer] = true;
+            if(this.global&&this.layout&&this.app){
               mergeLocales();
-            },
-            (e)=>{
-              mergeLocales();
-            },
-            true
-          );
+            }
+          }
         }
 
-        this.importHref(
-          this.resolveUrl('/src/apps/localize.html'),
-          (e)=>{
 
-            if(typeof locales == 'undefined'){
-              locales = {global:localize};
-            }
+        if(typeof locales == 'undefined'){
+          locales = {global:null,apps:{},layouts:{}};
+        }
 
-            if(typeof locales.apps == 'undefined'){
-              locales.apps = {};
-            }
+        if(locales.global==null){
+          axios.get('/src/apps/localize.json')
+          .then((response)=>{
+            locales.global = response.data;
+            localesLoaded.loaded('global');
+          })
+        }else{
+          localesLoaded.loaded('global');
+        }
 
-            if(typeof locales.layouts == 'undefined'){
-              locales.layouts = {};
-            }
+        if(typeof locales.layouts[layout] == 'undefined'){
+          axios.get('/src/template/'+layout+'/localize.json')
+          .then((response)=>{
+            locales.layouts[layout] = response.data;
+            localesLoaded.loaded('layout');
+          })
+        }else{
+          localesLoaded.loaded('layout');
+        }
 
-            this.importHref(
-              this.resolveUrl('/src/template/'+layout+'/localize.html'),
-              (e)=>{
-
-                
-                if(typeof locales.layouts[layout] == 'undefined'){
-                  locales.layouts[layout] = localize;
-                }
-
-                importLocalesApp();
-                
-              },
-              (e)=>{
-                importLocalesApp();
-              },
-              true
-            );
-
-          },
-          null,
-          true
-        );
-
-        
-
+        if(typeof locales.apps[app] == 'undefined'){
+          axios.get('/src/apps/'+app+'/localize.json')
+          .then((response)=>{
+            locales.apps[app] = response.data;
+            localesLoaded.loaded('app');
+          })
+        }else{
+          localesLoaded.loaded('app');
+        }
 
       },
       checkRole:function(app){
