@@ -1,5 +1,5 @@
 var gulp = require('gulp');
-// var vulcanize = require('gulp-vulcanize');
+var vulcanize = require('gulp-vulcanize');
 
 
 
@@ -32,32 +32,32 @@ var gulp = require('gulp');
 //     ]
 //   )
 //   .pipe(gulp.dest('dist/src'));
-// });
-
-// gulp.task('vulcanize',function(){
-//   return gulp.src('src/nx-system.html')
-//   .pipe(vulcanize({
-//     stripComments:true,
-//     inlineScripts:true,
-//     inlineCss:true
-//   }))
-//   .pipe(gulp.dest('dist/src'));
-// });
+// })
 
 
 // gulp.task('default', ['vulcanize','copy','copyLib','copyApp']);
 
 
 
-gulp.task('dist',function(){
-  return gulp.src(
-    [
-      'src/nx-system.html',
-      'src/nx-param.html',
-      'src/nx-behavior.html'
-    ]
-  )
+// gulp.task('dist',function(){
+//   return gulp.src(
+//     [
+//       'src/nx-system.html',
+//       'src/nx-param.html',
+//       'src/nx-behavior.html'
+//     ]
+//   )
+//   .pipe(gulp.dest('dist'));
+// });
+
+gulp.task('vulcanize',function(){
+  return gulp.src('src/nx-system.html')
+  .pipe(vulcanize({
+    stripComments:true,
+    inlineScripts:true,
+    inlineCss:true
+  }))
   .pipe(gulp.dest('dist'));
 });
 
-gulp.task('default', ['dist']);
+gulp.task('default', ['vulcanize']);
