@@ -26,7 +26,7 @@
         data="{{routeAppOnly}}"
     >
     </app-route>
-
+    <a id="changePath" href="#" style="display:none">link change path</a>
     <tag-app-load></tag-app-load>
 
   </template>
@@ -110,12 +110,13 @@
             );
           }
         }else{
-          this.changePath(initSystem.indexPath);
+          //this.changePath(initSystem.indexPath);
           window.history.pushState(null,null, initSystem.indexPath);
         }
       },
       changePath:function(path){
-         this.set('route.path', path);
+         this.$.changePath.setAttribute("href", path);
+         this.$.changePath.click();
       },
       getLocales:function(layout,app,callback){
 
