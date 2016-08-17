@@ -2,6 +2,7 @@
 
   <template>
       <div>testpage2</div>
+      <button on-tap="gotopage">to page error 404</button>
       <a href="/error/404">to page error 404</a>
   </template>
 
@@ -12,6 +13,9 @@
       created:function(){
         this.nxSetTitle('Page 2');
         this.nxSetLayout('layout-main');
+      },
+      gotopage:function(){
+        this.nxChangePath('/error/404');
       }
     });
 

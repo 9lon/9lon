@@ -1,8 +1,11 @@
 <dom-module id="error-404">
 
   <template>
+    <app-location route="{{route}}"></app-location>
     error 404<br>
+    <button on-tap="gotopage">test link</button>
     <a href="/app1/page1">test link</a>
+    <button on-tap="goback">back</button>
   </template>
 
   <script>
@@ -11,6 +14,12 @@
       behaviors:[nxCoreBehavior],
       created:function(){
         this.nxSetLayout('layout-error');
+      },
+      gotopage:function(){
+        this.nxChangePath('/app1/page1');
+      },
+      goback:function(){
+        console.log(window.history.back());
       }
     });
   </script>
