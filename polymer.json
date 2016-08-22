@@ -1,0 +1,8 @@
+{
+  "entrypoint": "index.html",
+  "shell": "src/nx-system.html",
+  "fragments": [
+    "src/app1/page1.html",
+    "src/app1/page2.html"
+  ]
+}
