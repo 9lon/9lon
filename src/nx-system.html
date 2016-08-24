@@ -1,14 +1,14 @@
 
-<script src="/bower_components/jwt-decode/build/jwt-decode.min.js"></script>
-<script src="/bower_components/axios/dist/axios.min.js"></script>
+<script src="../bower_components/jwt-decode/build/jwt-decode.min.js"></script>
+<script src="../bower_components/axios/dist/axios.min.js"></script>
 
-<link rel="import" href="/bower_components/polymer/polymer.html">
-<link rel="import" href="/bower_components/app-localize-behavior/app-localize-behavior.html">
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/app-localize-behavior/app-localize-behavior.html">
 <link rel="import" href="nx-behavior.html">
 
 
-<link rel="import" href="/bower_components/app-route/app-location.html">
-<link rel="import" href="/bower_components/app-route/app-route.html">
+<link rel="import" href="../bower_components/app-route/app-location.html">
+<link rel="import" href="../bower_components/app-route/app-route.html">
 <link rel="import" href="nx-param.html">
 
 <dom-module id="nx-system">
@@ -70,22 +70,35 @@
                 this.getLocales(this.layout,routeData.app,(data)=>{
                   mergeLocales = data;
                   if((this.layout!=this.oldLayout)){
-                    this.importHref(
-                      this.resolveUrl('/src/template/'+this.layout+'/'+this.layout+'.html'),
-                      (e)=>{
-                        var queryTag = this.$$('tag-app-load');
-                        queryTag.innerHTML='';
-                        var getLayout = document.createElement(this.layout);
-                        getLayout.route = routeData;
-                        getLayout.page = getPage;
-                        queryTag.appendChild(getLayout);
-                      },
-                      (e)=>{
-                        this.changePath('/error/404')
-                      },
 
-                      true
-                    );
+                    if(this.layout!="layout-main"){
+
+                      this.importHref(
+
+                        this.resolveUrl('/src/template/'+this.layout+'/'+this.layout+'.html'),
+                        (e)=>{
+                          var queryTag = this.$$('tag-app-load');
+                          queryTag.innerHTML='';
+                          var getLayout = document.createElement(this.layout);
+                          getLayout.route = routeData;
+                          getLayout.page = getPage;
+                          queryTag.appendChild(getLayout);
+                        },
+                        (e)=>{
+                          this.changePath('/error/404')
+                        },
+
+                        true
+                      );
+
+                    }else{
+                      var queryTag = this.$$('tag-app-load');
+                      queryTag.innerHTML='';
+                      var getLayout = document.createElement(this.layout);
+                      getLayout.route = routeData;
+                      getLayout.page = getPage;
+                      queryTag.appendChild(getLayout);
+                    }
                   }else if(typeof this.layout == "undefined"){
                     var queryTag = this.$$('tag-app-load');
                     queryTag.innerHTML='';
