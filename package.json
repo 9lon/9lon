@@ -1,0 +1,23 @@
+{
+  "name": "9lon",
+  "version": "1.0.0",
+  "description": "Framework for [Polymer](https://www.polymer-project.org).",
+  "main": "service-worker.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/9lon/9lon.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/9lon/9lon/issues"
+  },
+  "homepage": "https://github.com/9lon/9lon#readme",
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-html-replace": "^1.6.1"
+  }
+}
