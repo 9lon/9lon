@@ -13,10 +13,6 @@ gulp.task('default',function(){
     .pipe($.sourcemaps.write())
     .pipe(gulp.dest('dist/'));
 
-
     gulp.src(['src/nx-behavior.html','src/init-system.html']).pipe(gulp.dest('dist/'));
-
-
-
 
 });
