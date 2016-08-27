@@ -4,7 +4,7 @@ var $ = require('gulp-load-plugins')();
 gulp.task('build',function(){
      gulp.src(['src/nx-system.html','src/nx-param.html'])
     .pipe($.replace('../bower_components/','../../'))
-    .pipe($.crisper())
+    .pipe($.crisper({scriptInHead:false}))
     .pipe($.sourcemaps.init())
     .pipe($.if('*.js',$.babel({ presets: ['es2015'] })))
     .pipe($.if('*.js',$.uglify()))

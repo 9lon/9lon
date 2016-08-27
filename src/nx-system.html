@@ -28,8 +28,8 @@
   </template>
   
   <script>
-    nxQuerySystem = document.querySelector("nx-system");
-    nxQueryLocalize = {};
+    window.nxQuerySystem = document.querySelector("nx-system");
+    window.nxQueryLocalize = {};
 
     Polymer({
       is:'nx-system',
@@ -68,7 +68,7 @@
               getPage.route = routeData;
 
               this.getLocales(this.layout,routeData.app,(data)=>{
-                mergeLocales = data;
+                window.mergeLocales = data;
                 if((this.layout!=this.oldLayout)){
 
                   if(initSystem.layout!="layout-main"){
@@ -180,7 +180,7 @@
 
 
         if(typeof locales == 'undefined'){
-          locales = {global:null,apps:{},layouts:{}};
+          window.locales = {global:null,apps:{},layouts:{}};
         }
 
         if(locales.global==null){
