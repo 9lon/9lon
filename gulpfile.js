@@ -1,38 +1,17 @@
 var gulp = require('gulp');
-var htmlReplace = require('gulp-html-replace');
+var $ = require('gulp-load-plugins')();
 
 gulp.task('default',function(){
-     gulp.src('src/nx-system.html')
-    .pipe(htmlReplace({
-        'import': {
-                src:null,
-                tpl: 
-                '<script src="../../jwt-decode/build/jwt-decode.min.js"></script>\n'+
-                '<script src="../../axios/dist/axios.min.js"></script>\n'+
-
-                '<link rel="import" href="../../polymer/polymer.html">\n'+
-                '<link rel="import" href="../../app-localize-behavior/app-localize-behavior.html">\n'+
-                '<link rel="import" href="nx-behavior.html">\n'+
-
-                '<link rel="import" href="../../app-route/app-location.html">\n'+
-                '<link rel="import" href="../../app-route/app-route.html">\n'+
-                '<link rel="import" href="nx-param.html">'
-        }
-    }))
+     gulp.src(['src/nx-system.html','src/nx-param.html'])
+    .pipe(
+        $.replace('../bower_components/','../../')
+    )
+    .pipe($.crisper({scriptInHead:false}))
+    .pipe($.sourcemaps.init())
+    .pipe($.if('*.js',$.babel({ presets: ['es2015'] })))
+    .pipe($.if('*.js',$.uglify()))
+    .pipe($.sourcemaps.write())
     .pipe(gulp.dest('dist/'));
-
-
-
-    gulp.src('src/nx-param.html')
-    .pipe(htmlReplace({
-        'import': {
-                src:null,
-                tpl: 
-                '<link rel="import" href="../../polymer/polymer.html">'
-        }
-    }))
-    .pipe(gulp.dest('dist/'));
-
 
 
     gulp.src(['src/nx-behavior.html','src/init-system.html']).pipe(gulp.dest('dist/'));
