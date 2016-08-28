@@ -78,17 +78,18 @@
                   window.mergeLocales = data;
                   if((this.layout!=this.oldLayout)){
 
-                    if(initSystem.layout!="layout-main"){
+                    var renderLayout = ()=>{
+                      var queryTag = this.$$('tag-app-load');
+                      queryTag.innerHTML='';
+                      var getLayout = document.createElement(this.layout);
+                      getLayout.route = routeData;
+                      getLayout.page = getPage;
+                      queryTag.appendChild(getLayout);
+                    }
 
-                      var renderLayout = ()=>{
-                        var queryTag = this.$$('tag-app-load');
-                        queryTag.innerHTML='';
-                        var getLayout = document.createElement(this.layout);
-                        getLayout.route = routeData;
-                        getLayout.page = getPage;
-                        queryTag.appendChild(getLayout);
-                      }
+                    if(initSystem.layout!=this.layout){
 
+                      
                       this.importHref(
 
                         this.resolveUrl('/src/template/'+this.layout+'/'+this.layout+'.html'),
