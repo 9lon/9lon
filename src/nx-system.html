@@ -1,4 +1,3 @@
-
 <script src="../bower_components/jwt-decode/build/jwt-decode.min.js"></script>
 <script src="../bower_components/axios/dist/axios.min.js"></script>
 
@@ -16,221 +15,241 @@
 <dom-module id="nx-system">
   <template>
     <app-location route="{{route}}"></app-location>
-    <app-route
-        route="{{route}}"
-        pattern="/:app/:page"
-        data="{{routeData}}"
-    >
+    <app-route route="{{route}}" pattern="/:app/:page" data="{{routeData}}">
     </app-route>
     <a id="changePath" href="#" style="display:none">link change path</a>
     <tag-app-load></tag-app-load>
-    
+
   </template>
-  
+
   <script>
-    window.nxQuerySystem = document.querySelector("nx-system");
-    window.nxQueryLocalize = {};
+    (function() {
+      'use strict';
 
-    Polymer({
-      is:'nx-system',
-      properties:{
-        role:{
-          type:Object,
-          value:[
-            { path:'app1/page1',role:['admin','manager','user1']}
-          ]
-        }
-      },
-      observers: [
-        '_routePageChanged(route)'
-      ],created:function(){
-        if(typeof localStorage.nxLanguage == 'undefined'){
-          localStorage.setItem("nxLanguage", initSystem.language);
+      window.nxQuerySystem = document.querySelector("nx-system");
+      window.nxQueryLocalize = {};
+
+      class NxSystem {
+
+        get observers() {
+          return [
+            '_routePageChanged(route)'
+          ];
         }
 
-        var decoded = jwt_decode('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiVXNlcjEiLCJyb2xlIjoiYWRtaW4ifQ.oRx_ieJoxSZPv7Y8lM03Qv8Qb24PVmuFpWBUxWEkBcg');
-        this.auth = decoded;
-      },
-      _routePageChanged:function(getRoute){
-
-        var routeData = {};
-        if(getRoute.path == "/"){
-          var indexPath = initSystem.indexPath.split('/');
-          routeData = { app:indexPath[1],page:indexPath[2] };
-        }else if(typeof getRoute.path.split('/')[2] == "undefined"){
-          routeData = { app:'error',page:'404' };
-        }else{
-          routeData = this.routeData;
-        }
-
-        var renderPage = ()=>{
-              var getPage = document.createElement(routeData.app+'-'+routeData.page);
-              getPage.route = routeData;
-
-              this.getLocales(this.layout,routeData.app,(data)=>{
-                window.mergeLocales = data;
-                if((this.layout!=this.oldLayout)){
-
-                  if(initSystem.layout!="layout-main"){
-
-                    var renderLayout = ()=>{
-                      var queryTag = this.$$('tag-app-load');
-                      queryTag.innerHTML='';
-                      var getLayout = document.createElement(this.layout);
-                      getLayout.route = routeData;
-                      getLayout.page = getPage;
-                      queryTag.appendChild(getLayout);
-                    }
-
-                    this.importHref(
-
-                      this.resolveUrl('/src/template/'+this.layout+'/'+this.layout+'.html'),
-                      (e)=>{
-                        renderLayout();
-                      },
-                      (e)=>{
-                        this.changePath('/error/404')
-                      },
-
-                      true
-                    );
-
-                  }else{
-                    renderLayout();
-                  }
-                }else if(typeof this.layout == "undefined"){
-                  var queryTag = this.$$('tag-app-load');
-                  queryTag.innerHTML='';
-                  queryTag.appendChild(getPage);
-                }else{
-                  var queryTag = this.$$('tag-app-load>'+this.layout);
-                  queryTag.route = routeData;
-                  queryTag.page = getPage;
-                }
-
-                this.oldLayout = this.layout;
-
-              });
-        }
-          
-        if(this.checkRole(routeData)){
-          routeData = { app:'error',page:'403' };
-        }
-
-        this.importHref(
-          this.resolveUrl('/src/apps/'+routeData.app+'/'+routeData.page+'.html'),
-          (e)=>{
-            renderPage();
-          },
-          (e)=>{
-              routeData = { app:'error',page:'404' };
-              this.importHref(
-                this.resolveUrl('/src/apps/'+routeData.app+'/'+routeData.page+'.html'),
-                (e)=>{
-                  renderPage();
-                },
-                null,
-                true
-              );
-          },
-          true
-        );
-        
-       
-      },
-      changePath:function(path){
-         this.$.changePath.setAttribute("href", path);
-         this.$.changePath.click();
-      },
-      getLocales:function(layout,app,callback){
-
-        var mergeLocales = () => {
-          
-          var mergeData = JSON.parse(JSON.stringify(locales.global));
-     
-
-          if(typeof locales.layouts[layout] != "undefined"){
-            for(var key in locales.layouts[layout]) {
-                for(var key2 in locales.layouts[layout][key]) {
-                  mergeData[key][key2] = locales.layouts[layout][key][key2];
-                }
+        beforeRegister() {
+          this.is = 'nx-system';
+          this.properties = {
+            role:{
+              type:Object,
+              value:[
+                { path:'app1/page1',role:['admin','manager','user1']}
+              ]
             }
-          } 
+          };
+        }
 
-          for(var key in locales.apps[app]) {
-              for(var key2 in locales.apps[app][key]) {
-                mergeData[key][key2] = locales.apps[app][key][key2];
-              }
+        created(){
+          if(typeof localStorage.nxLanguage == 'undefined'){
+            localStorage.setItem("nxLanguage", initSystem.language);
           }
-          callback(mergeData);
 
+          var decoded = jwt_decode('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiVXNlcjEiLCJyb2xlIjoiYWRtaW4ifQ.oRx_ieJoxSZPv7Y8lM03Qv8Qb24PVmuFpWBUxWEkBcg');
+          this.auth = decoded;
         }
 
-        var localesLoaded = {
-          global:false,
-          layout:false,
-          app:false,
-          loaded:function (pointer) {
-            this[pointer] = true;
-            if(this.global&&this.layout&&this.app){
-              mergeLocales();
-            }
-          }
-        }
+        _routePageChanged(getRoute){
 
-
-        if(typeof locales == 'undefined'){
-          window.locales = {global:null,apps:{},layouts:{}};
-        }
-
-        if(locales.global==null){
-          axios.get('/src/apps/localize.json')
-          .then((response)=>{
-            locales.global = response.data;
-            localesLoaded.loaded('global');
-          })
-        }else{
-          localesLoaded.loaded('global');
-        }
-
-        if(typeof locales.layouts[layout] == 'undefined'){
-          axios.get('/src/template/'+layout+'/localize.json')
-          .then((response)=>{
-            locales.layouts[layout] = response.data;
-            localesLoaded.loaded('layout');
-          })
-        }else{
-          localesLoaded.loaded('layout');
-        }
-
-        if(typeof locales.apps[app] == 'undefined'){
-          axios.get('/src/apps/'+app+'/localize.json')
-          .then((response)=>{
-            locales.apps[app] = response.data;
-            localesLoaded.loaded('app');
-          })
-        }else{
-          localesLoaded.loaded('app');
-        }
-
-      },
-      checkRole:function(app){
-        var redirect = true;
-        this.role.map((obj,index)=>{
-          if(obj.path==(app.app+'/'+app.page)){
-            obj.role.map((sObj)=>{
-              if(this.auth.role==sObj){
-                redirect = false;
-              }
-            });
+          var routeData = {};
+          if(getRoute.path == "/"){
+            var indexPath = initSystem.indexPath.split('/');
+            routeData = { app:indexPath[1],page:indexPath[2] };
+          }else if(typeof getRoute.path.split('/')[2] == "undefined"){
+            routeData = { app:'error',page:'404' };
           }else{
-            redirect = false;
+            routeData = this.routeData;
           }
-        });
 
-        return redirect;
+          var renderPage = ()=>{
+                var getPage = document.createElement(routeData.app+'-'+routeData.page);
+                getPage.route = routeData;
+
+                this.getLocales(this.layout,routeData.app,(data)=>{
+                  window.mergeLocales = data;
+                  if((this.layout!=this.oldLayout)){
+
+                    if(initSystem.layout!="layout-main"){
+
+                      var renderLayout = ()=>{
+                        var queryTag = this.$$('tag-app-load');
+                        queryTag.innerHTML='';
+                        var getLayout = document.createElement(this.layout);
+                        getLayout.route = routeData;
+                        getLayout.page = getPage;
+                        queryTag.appendChild(getLayout);
+                      }
+
+                      this.importHref(
+
+                        this.resolveUrl('/src/template/'+this.layout+'/'+this.layout+'.html'),
+                        (e)=>{
+                          renderLayout();
+                        },
+                        (e)=>{
+                          this.changePath('/error/404')
+                        },
+
+                        true
+                      );
+
+                    }else{
+                      renderLayout();
+                    }
+                  }else if(typeof this.layout == "undefined"){
+                    var queryTag = this.$$('tag-app-load');
+                    queryTag.innerHTML='';
+                    queryTag.appendChild(getPage);
+                  }else{
+                    var queryTag = this.$$('tag-app-load>'+this.layout);
+                    queryTag.route = routeData;
+                    queryTag.page = getPage;
+                  }
+
+                  this.oldLayout = this.layout;
+
+                });
+          }
+            
+          if(this.checkRole(routeData)){
+            routeData = { app:'error',page:'403' };
+          }
+
+          this.importHref(
+            this.resolveUrl('/src/apps/'+routeData.app+'/'+routeData.page+'.html'),
+            (e)=>{
+              renderPage();
+            },
+            (e)=>{
+                routeData = { app:'error',page:'404' };
+                this.importHref(
+                  this.resolveUrl('/src/apps/'+routeData.app+'/'+routeData.page+'.html'),
+                  (e)=>{
+                    renderPage();
+                  },
+                  null,
+                  true
+                );
+            },
+            true
+          );
+          
+        
+        }
+
+
+        changePath(path){
+          this.$.changePath.setAttribute("href", path);
+          this.$.changePath.click();
+        }
+
+
+        getLocales(layout,app,callback){
+
+          var mergeLocales = () => {
+            
+            var mergeData = JSON.parse(JSON.stringify(locales.global));
+      
+
+            if(typeof locales.layouts[layout] != "undefined"){
+              for(var key in locales.layouts[layout]) {
+                  for(var key2 in locales.layouts[layout][key]) {
+                    mergeData[key][key2] = locales.layouts[layout][key][key2];
+                  }
+              }
+            } 
+
+            for(var key in locales.apps[app]) {
+                for(var key2 in locales.apps[app][key]) {
+                  mergeData[key][key2] = locales.apps[app][key][key2];
+                }
+            }
+            callback(mergeData);
+
+          }
+
+          var localesLoaded = {
+            global:false,
+            layout:false,
+            app:false,
+            loaded:function (pointer) {
+              this[pointer] = true;
+              if(this.global&&this.layout&&this.app){
+                mergeLocales();
+              }
+            }
+          }
+
+
+          if(typeof locales == 'undefined'){
+            window.locales = {global:null,apps:{},layouts:{}};
+          }
+
+          if(locales.global==null){
+            axios.get('/src/apps/localize.json')
+            .then((response)=>{
+              locales.global = response.data;
+              localesLoaded.loaded('global');
+            })
+          }else{
+            localesLoaded.loaded('global');
+          }
+
+          if(typeof locales.layouts[layout] == 'undefined'){
+            axios.get('/src/template/'+layout+'/localize.json')
+            .then((response)=>{
+              locales.layouts[layout] = response.data;
+              localesLoaded.loaded('layout');
+            })
+          }else{
+            localesLoaded.loaded('layout');
+          }
+
+          if(typeof locales.apps[app] == 'undefined'){
+            axios.get('/src/apps/'+app+'/localize.json')
+            .then((response)=>{
+              locales.apps[app] = response.data;
+              localesLoaded.loaded('app');
+            })
+          }else{
+            localesLoaded.loaded('app');
+          }
+
+        }
+
+
+        checkRole(app){
+          var redirect = true;
+          this.role.map((obj,index)=>{
+            if(obj.path==(app.app+'/'+app.page)){
+              obj.role.map((sObj)=>{
+                if(this.auth.role==sObj){
+                  redirect = false;
+                }
+              });
+            }else{
+              redirect = false;
+            }
+          });
+
+          return redirect;
+        }
+          
+
       }
-    });
+
+      Polymer(NxSystem);
+
+    })();
 
   </script>
 </dom-module>
