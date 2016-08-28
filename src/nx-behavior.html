@@ -1,6 +1,6 @@
 <script>
 
-  localesBehavior = {
+  let localesBehavior = {
     attached: function(){
       this.set('language',localStorage.nxLanguage);
       this.resources = mergeLocales;
@@ -18,9 +18,9 @@
       delete nxQueryLocalize[this.is];
     }
   }
-  nxLocalesBehavior = [ Polymer.AppLocalizeBehavior, localesBehavior ];
+  let nxLocalesBehavior = [ Polymer.AppLocalizeBehavior, localesBehavior ];
 
-  nxCoreBehavior = {
+  let nxCoreBehavior = {
     nxChangePath: function(path) {
       nxQuerySystem.changePath(path);
     },
@@ -32,7 +32,7 @@
     },
     nxSetGlobalElement:function(name){
       if(typeof nxGlobalElement == "undefined"){
-        nxGlobalElement = {};
+        window.nxGlobalElement = {};
       }
       nxGlobalElement[name] = this;
     },
@@ -44,7 +44,7 @@
     }
   };
 
-  nxTemplateBehavior = {
+  let nxTemplateBehavior = {
     observers:['getPage(page)'],
     getPage:function(page){
       var queryTag = this.$$('tag-page-load');
