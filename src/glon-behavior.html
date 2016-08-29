@@ -5,9 +5,11 @@
     attached: function(){
       this.set('language',localStorage.glLanguage);
       this.resources = mergeLocales;
+      console.log(this.resources);
     },
     glSwitchLanguage: function(local){
       localStorage.glLanguage = local;
+      console.log('s',gl.queryLocalize);
       for(var key in gl.queryLocalize) {
         gl.queryLocalize[key].language = local;
       }
@@ -18,7 +20,7 @@
     detached:function(){
       delete gl.queryLocalize[this.is];
     }
-  }
+  };
   gl.behavior.locales = [Polymer.AppLocalizeBehavior, localesBehavior];
 
   gl.behavior.core = {
