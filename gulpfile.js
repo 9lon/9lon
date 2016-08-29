@@ -2,7 +2,7 @@ var gulp = require('gulp');
 var $ = require('gulp-load-plugins')();
 
 gulp.task('build',function(){
-     gulp.src(['src/nx-system.html','src/nx-param.html','src/nx-behavior.html'])
+     gulp.src(['src/glon-system.html','src/gl-param.html','src/glon-behavior.html'])
     .pipe($.replace('../bower_components/','../../'))
     .pipe($.crisper({scriptInHead:false}))
     .pipe($.sourcemaps.init())
@@ -14,7 +14,7 @@ gulp.task('build',function(){
 });
 
 gulp.task('watch',function(){
-    gulp.watch('src/nx-system.html',['build']);
+    gulp.watch('src/plon-system.html',['build']);
 });
 
 gulp.task('default',['build']);
