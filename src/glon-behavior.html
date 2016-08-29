@@ -1,14 +1,13 @@
 <script>
-  window.gl = {behavior:{},queryLocalize:{}};
-  window.nxGlobalElement = {};
+  window.gl = {behavior:{},queryLocalize:{},element:{}};
 
   let localesBehavior = {
     attached: function(){
-      this.set('language',localStorage.nxLanguage);
+      this.set('language',localStorage.glLanguage);
       this.resources = mergeLocales;
     },
     glSwitchLanguage: function(local){
-      localStorage.nxLanguage = local;
+      localStorage.glLanguage = local;
       for(var key in gl.queryLocalize) {
         gl.queryLocalize[key].language = local;
       }
@@ -34,9 +33,9 @@
       },
       glQuery:function(name,el='get'){
         if(el!='get'){
-          nxGlobalElement[name] = el;
+          gl.element[name] = el;
         }else{
-          return nxGlobalElement[name];
+          return gl.element[name];
         }
       },
       glClone:function(data){
