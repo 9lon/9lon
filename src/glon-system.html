@@ -3,16 +3,16 @@
 
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="../bower_components/app-localize-behavior/app-localize-behavior.html">
-<link rel="import" href="nx-behavior.html">
+<link rel="import" href="glon-behavior.html">
 
 
 <link rel="import" href="../bower_components/app-route/app-location.html">
 <link rel="import" href="../bower_components/app-route/app-route.html">
-<link rel="import" href="nx-param.html">
+<link rel="import" href="gl-param.html">
 
 
 
-<dom-module id="glon-sys">
+<dom-module id="glon-system">
   <template>
     <app-location route="{{route}}"></app-location>
     <app-route route="{{route}}" pattern="/:app/:page" data="{{routeData}}">
@@ -25,11 +25,8 @@
   <script>
     (function() {
       'use strict';
-      
-      window.nxQuerySystem = document.querySelector("gl-system");
-      window.nxQueryLocalize = {};
-      
-
+    
+    
       class GlonSys {
 
         get observers() {
@@ -39,7 +36,7 @@
         }
 
         beforeRegister() {
-          this.is = 'glon-sys';
+          this.is = 'glon-system';
           this.properties = {
             role:{
               type:Object,
@@ -51,7 +48,7 @@
         }
 
         created(){
-          window.gl.glonSys = document.querySelector("glon-sys");
+          window.gl.glonSys = document.querySelector("glon-system");
 
           if(typeof localStorage.nxLanguage == 'undefined'){
             localStorage.setItem("nxLanguage", initSystem.language);

@@ -1,5 +1,5 @@
 <script>
-  window.gl = {behavior:{}};
+  window.gl = {behavior:{},queryLocalize:{}};
   window.nxGlobalElement = {};
 
   let localesBehavior = {
@@ -9,15 +9,15 @@
     },
     glSwitchLanguage: function(local){
       localStorage.nxLanguage = local;
-      for(var key in nxQueryLocalize) {
-        nxQueryLocalize[key].language = local;
+      for(var key in gl.queryLocalize) {
+        gl.queryLocalize[key].language = local;
       }
     },
     ready: function(){
-      nxQueryLocalize[this.is] = this;
+      gl.queryLocalize[this.is] = this;
     },
     detached:function(){
-      delete nxQueryLocalize[this.is];
+      delete gl.queryLocalize[this.is];
     }
   }
   gl.behavior.locales = [Polymer.AppLocalizeBehavior, localesBehavior];

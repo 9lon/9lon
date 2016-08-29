@@ -1,13 +1,13 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
 
-<dom-module id="nx-param">
+<dom-module id="gl-param">
   <template>
     <app-location route="{{route}}"></app-location>
   </template>
   <script>
     (function() {
       'use strict';
-      class NxParam {
+      class GlParam {
 
         get observers() {
           return [
@@ -16,7 +16,7 @@
         }
 
         beforeRegister() {
-          this.is = 'nx-param';
+          this.is = 'gl-param';
           this.properties = {
             pattern:{
               type:String
@@ -52,7 +52,7 @@
         }
 
       }
-      Polymer(NxParam);
+      Polymer(GlParam);
 
     })();
 
