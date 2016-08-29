@@ -1,11 +1,13 @@
 <script>
+  window.gl = {behavior:{}};
+  window.nxGlobalElement = {};
 
   let localesBehavior = {
     attached: function(){
       this.set('language',localStorage.nxLanguage);
       this.resources = mergeLocales;
     },
-    nxSwitchLanguage: function(local){
+    glSwitchLanguage: function(local){
       localStorage.nxLanguage = local;
       for(var key in nxQueryLocalize) {
         nxQueryLocalize[key].language = local;
@@ -18,33 +20,31 @@
       delete nxQueryLocalize[this.is];
     }
   }
-  let nxLocalesBehavior = [ Polymer.AppLocalizeBehavior, localesBehavior ];
+  gl.behavior.locales = [Polymer.AppLocalizeBehavior, localesBehavior];
 
-  let nxCoreBehavior = {
-    nxChangePath: function(path) {
-      nxQuerySystem.changePath(path);
-    },
-    nxSetLayout: function(layout){
-      nxQuerySystem.layout = layout;
-    },
-    nxSetTitle:function(txt){
-      document.title = txt;
-    },
-    nxSetGlobalElement:function(name){
-      if(typeof nxGlobalElement == "undefined"){
-        window.nxGlobalElement = {};
+  gl.behavior.core = {
+      glChangePath: function(path) {
+        window.gl.glonSys.changePath(path);
+      },
+      glSetLayout: function(layout){
+        window.gl.glonSys.layout = layout;
+      },
+      glSetTitle:function(txt){
+        document.title = txt;
+      },
+      glQuery:function(name,el='get'){
+        if(el!='get'){
+          nxGlobalElement[name] = el;
+        }else{
+          return nxGlobalElement[name];
+        }
+      },
+      glClone:function(data){
+        return JSON.parse(JSON.stringify(data));
       }
-      nxGlobalElement[name] = this;
-    },
-    nxGetGlobalElement:function(name){
-      return nxGlobalElement[name];
-    },
-    nxCloneData:function(data){
-      return JSON.parse(JSON.stringify(data));
-    }
   };
 
-  let nxTemplateBehavior = {
+  gl.behavior.template = {
     observers:['getPage(page)'],
     getPage:function(page){
       var queryTag = this.$$('tag-page-load');

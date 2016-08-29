@@ -18,18 +18,18 @@
     Polymer({
       is:'app1-page1',
       behaviors: [
-        nxCoreBehavior,
-        nxLocalesBehavior
+        gl.behavior.core,
+        gl.behavior.locales
       ],
       created:function(){
-        this.nxSetTitle('page 1');
-        this.nxSetLayout('layout-main');
+        this.glSetTitle('page 1');
+        this.glSetLayout('layout-main');
       },
       ready:function(){
-        this.name = this.nxGetGlobalElement('myData').dataObj.name;
+        this.name = this.glQuery('myData').dataObj.name;
       },
       gotopage:function(){
-        this.nxChangePath('/app1/page2');
+        this.glChangePath('/app1/page2');
       }
     });
 

@@ -12,7 +12,7 @@
 
 
 
-<dom-module id="nx-system">
+<dom-module id="glon-sys">
   <template>
     <app-location route="{{route}}"></app-location>
     <app-route route="{{route}}" pattern="/:app/:page" data="{{routeData}}">
@@ -26,11 +26,11 @@
     (function() {
       'use strict';
       
-      window.nxQuerySystem = document.querySelector("nx-system");
+      window.nxQuerySystem = document.querySelector("gl-system");
       window.nxQueryLocalize = {};
-      window.gl = {};
+      
 
-      class NxSystem {
+      class GlonSys {
 
         get observers() {
           return [
@@ -39,7 +39,7 @@
         }
 
         beforeRegister() {
-          this.is = 'nx-system';
+          this.is = 'glon-sys';
           this.properties = {
             role:{
               type:Object,
@@ -51,6 +51,8 @@
         }
 
         created(){
+          window.gl.glonSys = document.querySelector("glon-sys");
+
           if(typeof localStorage.nxLanguage == 'undefined'){
             localStorage.setItem("nxLanguage", initSystem.language);
           }
@@ -249,7 +251,7 @@
 
       }
 
-      Polymer(NxSystem);
+      Polymer(GlonSys);
 
     })();
 
