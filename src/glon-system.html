@@ -48,7 +48,7 @@
           window.gl.glonSys = document.querySelector("glon-system");
 
           if(typeof localStorage.glLanguage == 'undefined'){
-            localStorage.setItem("glLanguage", initSystem.language);
+            localStorage.setItem("glLanguage", glonSystem.language);
           }
 
           var decoded = jwt_decode('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiVXNlcjEiLCJyb2xlIjoiYWRtaW4ifQ.oRx_ieJoxSZPv7Y8lM03Qv8Qb24PVmuFpWBUxWEkBcg');
@@ -59,7 +59,7 @@
 
           var routeData = {};
           if(getRoute.path == "/"){
-            var indexPath = initSystem.indexPath.split('/');
+            var indexPath = glonSystem.indexPath.split('/');
             routeData = { app:indexPath[1],page:indexPath[2] };
           }else if(typeof getRoute.path.split('/')[2] == "undefined"){
             routeData = { app:'error',page:'404' };
@@ -84,7 +84,7 @@
                       queryTag.appendChild(getLayout);
                     }
 
-                    if(initSystem.layout!=this.layout){
+                    if(glonSystem.layout!=this.layout){
 
                       
                       this.importHref(
