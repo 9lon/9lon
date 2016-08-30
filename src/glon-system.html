@@ -24,7 +24,7 @@
       'use strict';
     
     
-      class GlonSys {
+      class GlonSystem {
 
         get observers() {
           return [
@@ -45,10 +45,10 @@
         }
 
         created(){
-          window.gl.glonSys = document.querySelector("glon-system");
+          window.gl.glonSystem = document.querySelector("glon-system");
 
           if(typeof localStorage.glLanguage == 'undefined'){
-            localStorage.setItem("glLanguage", glonSystem.language);
+            localStorage.setItem("glLanguage", glonInit.language);
           }
 
           var decoded = jwt_decode('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiVXNlcjEiLCJyb2xlIjoiYWRtaW4ifQ.oRx_ieJoxSZPv7Y8lM03Qv8Qb24PVmuFpWBUxWEkBcg');
@@ -59,7 +59,7 @@
 
           var routeData = {};
           if(getRoute.path == "/"){
-            var indexPath = glonSystem.indexPath.split('/');
+            var indexPath = glonInit.indexPath.split('/');
             routeData = { app:indexPath[1],page:indexPath[2] };
           }else if(typeof getRoute.path.split('/')[2] == "undefined"){
             routeData = { app:'error',page:'404' };
@@ -84,7 +84,7 @@
                       queryTag.appendChild(getLayout);
                     }
 
-                    if(glonSystem.layout!=this.layout){
+                    if(glonInit.layout!=this.layout){
 
                       
                       this.importHref(
@@ -245,7 +245,7 @@
 
       }
 
-      Polymer(GlonSys);
+      Polymer(GlonSystem);
 
     })();
 
