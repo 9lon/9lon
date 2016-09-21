@@ -40,6 +40,22 @@
       },
       glClone:function(data){
         return JSON.parse(JSON.stringify(data));
+      },
+      glBind:function(name,props='set'){
+        if(props!='set'){
+          
+          for(i in props){
+            this.listen(document, `gl-event-${name}-${i}`, props[i]);
+          }
+          
+        }else{
+          
+        }
+      },
+      glBindOb:function(ob){
+        var prop = ob.path.split(".");
+        //console.log(`gl-event-${this.glBindName}-${prop[0]}`);
+        this.fire(`gl-event-${this.glBindName}-${prop[0]}`, {value: ob.value});
       }
   };
 

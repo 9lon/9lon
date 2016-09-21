@@ -1,0 +1,26 @@
+<link rel="import" href="components/my-data-model.html">
+<dom-module id="app1-test-binding">
+  
+
+  <template>
+      <my-data-model></my-data-model>
+  </template>
+
+  <script>
+    Polymer({
+      is:'app1-test-binding',
+      behaviors:[gl.behavior.core],
+      created:function(){
+        this.glSetTitle('test-binding');
+        this.glSetLayout('layout-main');
+
+        this.glBind('my-bind',{text:'onEvent'});
+      },
+      onEvent:function(e){
+        
+        console.log(e.detail.value);
+      }
+    });
+
+  </script>
+</dom-module>

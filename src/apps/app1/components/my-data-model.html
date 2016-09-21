@@ -1,0 +1,31 @@
+<dom-module id="my-data-model">
+  
+  <template>
+    <button on-tap="changeData">change Data</button>
+  </template>
+  
+  <script>
+    Polymer({
+      is:'my-data-model',
+      properties:{
+        glBindName:{
+            value:"my-bind"
+        },
+        text:{
+            type:String,
+            value:"test 1234"
+        }
+      },
+      created:function(){
+          this.glBind();
+      },
+      observers:['glBindOb(text.*)'],
+      behaviors: [
+        gl.behavior.core
+      ],
+      changeData:function(){
+          this.text="NK DATA";
+      }
+    });
+  </script>
+</dom-module>
