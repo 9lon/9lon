@@ -1,23 +1,22 @@
 <dom-module id="my-data-model">
   
   <template>
+    <input type="text" value="{{text::input}}">
     <button on-tap="changeData">change Data</button>
+    {{glBindName}}
   </template>
   
   <script>
     Polymer({
       is:'my-data-model',
       properties:{
-        glBindName:{
-            value:"my-bind"
-        },
         text:{
             type:String,
-            value:"test 1234"
+            value:'dd'
         }
       },
-      created:function(){
-          this.glBind();
+      ready:function(){
+        this.glBind('my-bind');
       },
       observers:['glBindOb(text.*)'],
       behaviors: [

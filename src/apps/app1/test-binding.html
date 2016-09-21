@@ -3,7 +3,8 @@
   
 
   <template>
-      <my-data-model></my-data-model>
+      <my-data-model></my-data-model><br>
+      {{text}}
   </template>
 
   <script>
@@ -13,12 +14,9 @@
       created:function(){
         this.glSetTitle('test-binding');
         this.glSetLayout('layout-main');
-
-        this.glBind('my-bind',{text:'onEvent'});
       },
-      onEvent:function(e){
-        
-        console.log(e.detail.value);
+      ready:function(){
+        this.glBind('my-bind',['text']);
       }
     });
 

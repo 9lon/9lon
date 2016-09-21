@@ -41,21 +41,50 @@
       glClone:function(data){
         return JSON.parse(JSON.stringify(data));
       },
-      glBind:function(name,props='set'){
-        if(props!='set'){
-          
-          for(i in props){
-            this.listen(document, `gl-event-${name}-${i}`, props[i]);
+      glBind:function(name,props){
+       
+        if(typeof props!='undefined'){
+          this.glBindlisten = true;
+          this.listen(document, `gl-event-${name}`,'glBindOn');
+          this.glBindProps = props;
+
+          var waitForProps = () => {
+            this.async(()=>{
+              if(!this.glQuery(`gl-event-${name}`)){
+                waitForProps();
+              }else{
+                props.map((prop)=>{
+                  if(this.glQuery(`gl-event-${name}`)[prop]){
+                    this[prop] = this.glQuery(`gl-event-${name}`)[prop];
+                  }
+                });
+              }
+            }, 10);
           }
-          
+          waitForProps();
         }else{
-          
+          this.glBindName = `gl-event-${name}`;
+          this.glQuery(`gl-event-${name}`,this);
+          //this.glQuery(`gl-event-${name}`).glBindName = 'xx';
         }
+
       },
       glBindOb:function(ob){
         var prop = ob.path.split(".");
-        //console.log(`gl-event-${this.glBindName}-${prop[0]}`);
-        this.fire(`gl-event-${this.glBindName}-${prop[0]}`, {value: ob.value});
+        this.fire(`${this.glBindName}`, {value: ob.base, prop: prop[0]});
+      },
+      glBindOn:function(e){
+        this.glBindProps.map((prop)=>{
+          if(prop==e.detail.prop){
+            this[e.detail.prop] = e.detail.value;
+          }
+        });
+        
+      },
+      detached:function(){
+        if(this.glBindlisten){
+          this.listen(document, `gl-event-${name}`,'glBindOn');
+        }
       }
   };
 
