@@ -193,7 +193,7 @@
           }
 
           if(locales.global==null){
-            axios.get('/src/apps/localize.json')
+            axios.get(this.resolveUrl('/src/apps/localize.json'))
             .then((response)=>{
               locales.global = response.data;
               localesLoaded.loaded('global');
@@ -203,7 +203,7 @@
           }
 
           if(typeof locales.layouts[layout] == 'undefined'){
-            axios.get('/src/template/'+layout+'/localize.json')
+            axios.get(this.resolveUrl('/src/template/'+layout+'/localize.json'))
             .then((response)=>{
               locales.layouts[layout] = response.data;
               localesLoaded.loaded('layout');
@@ -213,7 +213,7 @@
           }
 
           if(typeof locales.apps[app] == 'undefined'){
-            axios.get('/src/apps/'+app+'/localize.json')
+            axios.get(this.resolveUrl('/src/apps/'+app+'/localize.json'))
             .then((response)=>{
               locales.apps[app] = response.data;
               localesLoaded.loaded('app');
