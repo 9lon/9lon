@@ -104,9 +104,26 @@
   gl.behavior.template = {
     observers:['getPage(page)'],
     getPage:function(page){
-      var queryTag = this.$$('tag-page-load');
-      queryTag.innerHTML='';
-      queryTag.appendChild(page);
+
+      const changePage = ()=>{
+        console.log('change');
+        var queryTag = this.$$('tag-page-load');
+        queryTag.innerHTML='';
+        queryTag.appendChild(page);
+      }
+
+      if(typeof this.oldRoute=="undefined"){
+        changePage();
+      }else if(this.route.app!=this.oldRoute.app){
+        changePage();
+      }else if(this.route.app==this.oldRoute.app && this.route.page!=this.oldRoute.page){
+        changePage();
+      }
+      
+      this.oldRoute = this.route;
+    },
+    testObj:function(route){
+      console.log(route);
     }
   };
 
