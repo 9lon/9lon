@@ -13,8 +13,15 @@
     "**/.*",
     "node_modules",
     "bower_components",
-    "test",
-    "tests"
+    "images",
+    "index.html",
+    "bower.json",
+    "favicon.ico",
+    "gulpfile.js",
+    "manifest.json",
+    "package.json",
+    "polymer.json",
+    "service-worker.js"
   ],
   "dependencies": {
     "polymer": "Polymer/polymer#^1.6.1",

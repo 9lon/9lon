@@ -193,31 +193,67 @@
           }
 
           if(locales.global==null){
-            axios.get(this.resolveUrl('/src/apps/localize.json'))
-            .then((response)=>{
-              locales.global = response.data;
-              localesLoaded.loaded('global');
-            })
+            fetch(this.resolveUrl('/src/apps/localize.json'))  
+            .then(  
+              (response)=>{  
+                if (response.status !== 200) {  
+                  console.log('Looks like there was a problem. Status Code: ' +  response.status);  
+                  return;  
+                }
+                response.json().then((data)=>{  
+                  locales.global = data;
+                  localesLoaded.loaded('global');
+                });  
+              }  
+            )  
+            .catch((err)=>{  
+              console.log('Fetch Error :-S', err);  
+            });
           }else{
             localesLoaded.loaded('global');
           }
 
           if(typeof locales.layouts[layout] == 'undefined'){
-            axios.get(this.resolveUrl('/src/template/'+layout+'/localize.json'))
-            .then((response)=>{
-              locales.layouts[layout] = response.data;
-              localesLoaded.loaded('layout');
-            })
+      
+            fetch(this.resolveUrl('/src/template/'+layout+'/localize.json'))  
+            .then(  
+              (response)=>{  
+                if (response.status !== 200) {  
+                  console.log('Looks like there was a problem. Status Code: ' +  response.status);  
+                  return;  
+                }
+                response.json().then((data)=>{  
+                  locales.layouts[layout] = data;
+                  localesLoaded.loaded('layout');
+                });  
+              }  
+            )  
+            .catch((err)=>{  
+              console.log('Fetch Error :-S', err);  
+            });
+
           }else{
             localesLoaded.loaded('layout');
           }
 
           if(typeof locales.apps[app] == 'undefined'){
-            axios.get(this.resolveUrl('/src/apps/'+app+'/localize.json'))
-            .then((response)=>{
-              locales.apps[app] = response.data;
+
+            fetch(this.resolveUrl('/src/apps/'+app+'/localize.json'))  
+            .then(  
+              (response)=>{  
+                if (response.status !== 200) {  
+                  console.log('Looks like there was a problem. Status Code: ' +  response.status);  
+                  return;  
+                }
+                response.json().then((data)=>{  
+                  locales.apps[app] = data;
               localesLoaded.loaded('app');
-            })
+                });  
+              }  
+            )  
+            .catch((err)=>{  
+              console.log('Fetch Error :-S', err);  
+            });
           }else{
             localesLoaded.loaded('app');
           }

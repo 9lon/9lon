@@ -10,7 +10,8 @@
       {{localize('parameter')}} 2 : [[getParam.param2]]<br>
       {{localize('app')}}<br>
       <button on-tap="gotopage">to page 2</button>
-      <a href="/app1/page2">to page 2</a>
+      <a href="/app1/page2">to page 2</a><br>
+      <button on-tap="pushNotify">Notify</button>
 
   </template>
 
@@ -19,7 +20,8 @@
       is:'app1-page1',
       behaviors: [
         gl.behavior.core,
-        gl.behavior.locales
+        gl.behavior.locales,
+        gl.behavior.notification
       ],
       created:function(){
         this.glSetTitle('page 1');
@@ -30,6 +32,9 @@
       },
       gotopage:function(){
         this.glChangePath('/app1/page2');
+      },
+      pushNotify:function(){
+        this.glNotify('Title','Msg','/images/notify.png');
       }
     });
 
