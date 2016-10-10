@@ -16,7 +16,7 @@
       gl.queryLocalize[this.is] = this;
     },
     detached:function(){
-      delete gl.queryLocalize[this.is];
+      delete gl.queryLocalize[this.is]; 
     }
   };
   gl.behavior.locales = [Polymer.AppLocalizeBehavior, localesBehavior];
@@ -85,6 +85,19 @@
         if(this.glBindlisten){
           this.listen(document, `gl-event-${name}`,'glBindOn');
         }
+      },
+      glStrToInt:function(ob,param){
+          if(ob.path.split(".").length == 2){
+              ob.base[param]=parseInt(ob.value);
+          }
+      },
+      glStrToFloat:function(ob,param){
+          if(ob.path.split(".").length == 2){
+              ob.base[param]=parseFloat(ob.value);
+          }
+      },
+      glCurrency:function(val){
+        return parseFloat(val).toLocaleString();
       }
   };
 
@@ -98,21 +111,26 @@
   };
 
   gl.behavior.notification = {
-    glNotify:function(title,msg,icon){
+    glNotify:function(title,msg,icon,time=5000){
 
       var options = {
         body: msg,
         icon: icon,
       }
 
+      var notify = ()=>{
+        var n = new Notification(title,options);
+        setTimeout(n.close.bind(n), time);
+      }
+
       if (!("Notification" in window)) {
         console.warn("This browser does not support desktop notification");
       } else if (Notification.permission === "granted") {
-        var notification = new Notification(title,options);
+        notify();
       } else if (Notification.permission !== 'denied') {
         Notification.requestPermission(function (permission) {
           if (permission === "granted") {
-            var notification = new Notification(title,options);
+            notify();
           }
         });
       }
